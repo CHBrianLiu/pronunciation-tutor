@@ -40,6 +40,7 @@ func newEnv(key string) env {
 	return env{key: key, getter: &defaultEnvGetter{}}
 }
 
-func newEnvWithCustomGet(key string, getter envGetter) env {
+// newEnvWithGetter is for testing only. Use newEnv instead.
+func newEnvWithGetter(key string, getter envGetter) env {
 	return env{key: key, getter: getter}
 }

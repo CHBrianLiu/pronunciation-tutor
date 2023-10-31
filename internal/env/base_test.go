@@ -55,7 +55,7 @@ func TestEnv_OnlyCallGetOnce(t *testing.T) {
 	mockGetter.On("GetEnv", envVarKey).Return(envVarValue)
 
 	// act
-	e := newEnvWithCustomGet(envVarKey, &mockGetter)
+	e := newEnvWithGetter(envVarKey, &mockGetter)
 	e.GetValue()
 	actual := e.GetValue()
 
