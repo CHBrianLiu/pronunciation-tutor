@@ -12,6 +12,8 @@ func (g *defaultEnvGetter) GetEnv(key string) string {
 	return os.Getenv(key)
 }
 
+type envOption = func(*env)
+
 // env defines the internal data structure for environment variables.
 type env struct {
 	key, value string
@@ -36,11 +38,18 @@ func (e *env) GetValue() string {
 }
 
 // newEnv creates a new env available to use.
-func newEnv(key string) env {
-	return env{key: key, getter: &defaultEnvGetter{}}
+func newEnv(key string, opts ...envOption) env {
+	e := env{key: key, getter: &defaultEnvGetter{}}
+	for _, opt := range opts {
+		opt(&e)
+	}
+	return e
 }
 
-// newEnvWithGetter is for testing only. Use newEnv instead.
-func newEnvWithGetter(key string, getter envGetter) env {
-	return env{key: key, getter: getter}
+// withGetter creates an option for newEnv. This option replaces the default env getter
+// with the one passed in.
+func withGetter(getter envGetter) envOption {
+	return func(e *env) {
+		e.getter = getter
+	}
 }
