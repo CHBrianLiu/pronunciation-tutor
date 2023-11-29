@@ -1,4 +1,4 @@
-module pronunciation-tutor
+module github.com/CHBrianLiu/pronunciation-tutor
 
 go 1.21
 
