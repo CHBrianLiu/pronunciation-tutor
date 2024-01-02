@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-type eventHandler = func(MessageReplier, *linebot.Event) bool
+type eventHandler = func(*linebot.Client, *linebot.Event) bool
 
 type HandlerCollection map[linebot.EventType]eventHandler
 
@@ -15,7 +15,7 @@ var handlers = HandlerCollection{
 
 type Manager struct {
 	handlers HandlerCollection
-	replier  MessageReplier
+	replier  *linebot.Client
 }
 
 func (m *Manager) GetHandler(event *linebot.Event) (func(*linebot.Event), bool) {
@@ -30,6 +30,6 @@ func (m *Manager) GetHandler(event *linebot.Event) (func(*linebot.Event), bool) 
 	}, true
 }
 
-func NewManager(r MessageReplier) *Manager {
+func NewManager(r *linebot.Client) *Manager {
 	return &Manager{handlers, r}
 }
